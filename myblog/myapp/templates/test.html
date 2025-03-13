@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Home Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <header class="bg-gray-900 text-white py-8">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <!-- Logo -->
+      <a href="#" class="text-2xl font-bold">MyBlog</a>
+
+      <!-- Navigation -->
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#" class="hover:text-yellow-500 transition-colors">Home</a></li>
+          <li><a href="#" class="hover:text-yellow-500 transition-colors">Posts</a></li>
+          <li><a href="#" class="hover:text-yellow-500 transition-colors">Articles</a></li>
+          <li><a href="#" class="hover:text-yellow-500 transition-colors">Tags</a></li>
+          <li><a href="#" class="hover:text-yellow-500 transition-colors">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-cover bg-center h-96 relative" style="background-image: url('https://via.placeholder.com/1920x400');">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">Welcome to My Blog</h1>
+        <p class="text-lg">Your source of creativity, sports, and lifestyle inspiration.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Blog Posts -->
+    <div class="md:col-span-2 space-y-8">
+      <!-- Post 1 -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img src="https://via.placeholder.com/800x400" alt="Post Image" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <ul class="flex space-x-2 mb-4">
+            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Travel</a></li>
+            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Health</a></li>
+          </ul>
+          <h2 class="text-xl font-bold mb-2"><a href="#" class="hover:text-yellow-600 transition-colors">10 Places Worth Waking Up Early For</a></h2>
+          <p class="text-gray-600 mb-4">So, you're in St. Petersburg. Early morning. The ice has melted from the rivers and canals, the city's fountains are running... Museums are still closed. What to see?</p>
+          <div class="flex items-center text-sm text-gray-500">
+            <time datetime="2023-10-01">October 1, 2023</time>
+            <span class="mx-2">·</span>
+            <a href="#" class="hover:text-yellow-600">Unknown Author</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Post 2 -->
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <img src="https://via.placeholder.com/800x400" alt="Post Image" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <ul class="flex space-x-2 mb-4">
+            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Lifestyle</a></li>
+            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Food</a></li>
+          </ul>
+          <h2 class="text-xl font-bold mb-2"><a href="#" class="hover:text-yellow-600 transition-colors">The Art of Mindful Eating</a></h2>
+          <p class="text-gray-600 mb-4">Discover how mindful eating can transform your relationship with food and improve your overall well-being.</p>
+          <div class="flex items-center text-sm text-gray-500">
+            <time datetime="2023-09-28">September 28, 2023</time>
+            <span class="mx-2">·</span>
+            <a href="#" class="hover:text-yellow-600">Jane Doe</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="space-y-8">
+      <!-- Search -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold mb-4">Search</h3>
+        <form>
+          <input type="text" placeholder="Search..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500">
+        </form>
+      </div>
+
+      <!-- Recent Posts -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold mb-4">Recent Posts</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="block text-gray-700 hover:text-yellow-600 transition-colors">10 Places Worth Waking Up Early For</a></li>
+          <li><a href="#" class="block text-gray-700 hover:text-yellow-600 transition-colors">The Art of Mindful Eating</a></li>
+          <li><a href="#" class="block text-gray-700 hover:text-yellow-600 transition-colors">How to Stay Fit While Traveling</a></li>
+        </ul>
+      </div>
+
+      <!-- Tags -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold mb-4">Tags</h3>
+        <div class="flex flex-wrap gap-2">
+          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Travel</a>
+          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Health</a>
+          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Lifestyle</a>
+          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Food</a>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2023 MyBlog. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

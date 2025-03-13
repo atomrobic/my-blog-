@@ -1,0 +1,156 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-cover bg-center h-96 relative" style="background-image: url('/static/images/hero.jpg');">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold mb-4">Welcome to My Blog</h1>
+            <p class="text-lg">Insights, stories, and updates from around the world.</p>
+        </div>
+    </div>
+</section>
+
+<style>
+  /* General Image Styling */
+  img {
+    max-width: 80%; /* Ensures images don't overflow their containers */
+    height: auto; /* Maintains aspect ratio */
+    display: block; /* Removes extra space below images */
+    border-radius: 8px; /* Adds rounded corners for a modern look */
+  }
+
+  /* Background Image Section */
+  .parallax-section {
+    position: relative;
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Overlay for Background Image */
+  .blog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+  }
+
+  /* Sidebar Image Styling */
+  .posts-img {
+    width: 70px; /* Fixed width for sidebar images */
+    height: 100px; /* Fixed height for sidebar images */
+    object-fit: cover; /* Ensures images fill the container without distortion */
+    border-radius: 8px; /* Rounded corners */
+  }
+</style>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Blog Posts -->
+    <div class="md:col-span-2 space-y-8">
+      {% for post in latest_posts %}
+      <article class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Background Image Section -->
+        <section
+          class="parallax-section"
+          style="background-image: url('{{ post.background_image }}');"
+        >
+          <div class="blog-overlay p-6">
+            {% for image in post.images.all %}
+            <!-- Loop through related BlogImage objects -->
+            <p class="image-title text-white"><i class="fas fa-image"></i> {{ image.title }}</p>
+            {% endfor %}
+          </div>
+        </section>
+  
+        <!-- Post Content -->
+        <div class="p-6">
+          <!-- Tags -->
+          <ul class="flex space-x-2 mb-4">
+            <li>
+              <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Tech</a>
+            </li>
+            <li>
+              <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">News</a>
+            </li>
+          </ul>
+  
+          <!-- Title -->
+          <h2 class="text-xl font-bold mb-2">
+            <a href="{% url 'blog_details' post.id %}" class="hover:text-yellow-600 transition-colors">{{ post.title }}</a>
+          </h2>
+        
+
+          <!-- Description -->
+          <p class="text-gray-600 mb-4">{{ post.description }}</p>
+  
+          <!-- Metadata -->
+          <div class="flex items-center text-sm text-gray-500">
+            <time datetime="{{ post.date }}">{{ post.date|date:"F j, Y" }}</time>
+            <span class="mx-2">·</span>
+            <a href="#" class="hover:text-yellow-600">{{ post.author }}</a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  
+    <!-- Sidebar -->
+    <aside class="space-y-8">
+        <!-- Search -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-bold mb-4">Search</h3>
+            <form method="GET" action="/search/">
+                <input type="text" name="q" placeholder="Search..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500">
+            </form>
+        </div>
+
+        <!-- Recent Posts -->
+    <!-- Recent Posts -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-lg font-bold mb-4">Recent Posts</h3>
+        <ul class="space-y-2">
+            {% for post in recent_posts %}
+            <li class="flex items-center space-x-4">
+                <!-- Image Handling -->
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="posts-img">
+                {% else %}
+                    <img src="/static/default-image.jpg" alt="Default Image" class="posts-img"> <!-- Fallback image -->
+                {% endif %}
+    
+                <div>
+                    <a href="{% url 'blog_details' post.id %}" class="block text-gray-700 hover:text-yellow-600 transition-colors">
+                        {{ post.title }}
+                    </a>
+                    <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"F j, Y" }}</time>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+        <!-- Tags -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-bold mb-4">Tags</h3>
+            <div class="flex flex-wrap gap-2">
+                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Technology</a>
+                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Programming</a>
+                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">AI</a>
+                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Web Development</a>
+            </div>
+        </div>
+    </aside>
+</main>
+
+{% endblock %}

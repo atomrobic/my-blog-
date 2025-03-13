@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Blog{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="" class="text-2xl font-bold">MyBlog</a>
+
+            <!-- Navigation -->
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="{% url 'create_blog_post' %}" class="hover:text-yellow-500 transition-colors">Home</a></li>
+                    <li><a href="" class="hover:text-yellow-500 transition-colors">Posts</a></li>
+                    <li><a href="" class="hover:text-yellow-500 transition-colors">Articles</a></li>
+                    <li><a href="" class="hover:text-yellow-500 transition-colors">Tags</a></li>
+                    <li><a href="" class="hover:text-yellow-500 transition-colors">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Block -->
+    <div class="container mx-auto px-4 py-12">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; {% now 'Y' %} MyBlog. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
