@@ -4,40 +4,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Blog{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Navbar Styling */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease-in-out;
+            background-color: rgba(55, 65, 81, 0.9); /* Semi-transparent gray */
+            padding: 14px 0;
+            backdrop-filter: blur(10px); /* Smooth glass effect */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sticky-nav.scrolled {
+            background-color: rgba(30, 41, 59, 0.95); /* Darker shade */
+            padding: 12px 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-link {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            padding: 6px 4px;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ff7eb3;
+            transition: width 0.3s ease-in-out;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: rgb(234, 231, 219);
+        }
+        
+        .nav-link.active {
+            color: #ff7eb3;
+        }
+        
+        .nav-link.active:after {
+            width: 100%;
+            background-color: #ff7eb3;
+        }
+        
+        /* Button style */
+        .nav-button {
+            background: linear-gradient(90deg, #ff7eb3, rgb(21, 18, 19));
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+        }
+        
+        .nav-button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 75%;
+            height: 100vh;
+            background-color: rgba(30, 41, 59, 0.98);
+            z-index: 1001;
+            transition: right 0.3s ease-in-out;
+            backdrop-filter: blur(10px);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            padding: 80px 30px;
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans">
 
-    <!-- Header -->
-    <header class="bg-gray-900 text-white py-8">
+<body class="bg-gray-50 font-sans">
+    <!-- Header with Scroll Effect -->
+    <header id="navbars" class="sticky-nav text-white py-4">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <!-- Logo -->
-            <a href="" class="text-2xl font-bold">MyBlog</a>
-
-            <!-- Navigation -->
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="{% url 'create_blog_post' %}" class="hover:text-yellow-500 transition-colors">Home</a></li>
-                    <li><a href="" class="hover:text-yellow-500 transition-colors">Posts</a></li>
-                    <li><a href="" class="hover:text-yellow-500 transition-colors">Articles</a></li>
-                    <li><a href="" class="hover:text-yellow-500 transition-colors">Tags</a></li>
-                    <li><a href="" class="hover:text-yellow-500 transition-colors">Contact</a></li>
+            <a href="#" class="text-2xl font-bold flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>MyBlog</span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6 items-center">
+                    <li><a href="{% url 'create_blog_post' %}" class="nav-link active">Home</a></li>
+                    <li><a href="#" class="nav-link">Posts</a></li>
+                    <li><a href="#" class="nav-link">Articles</a></li>
+                    <li><a href="#" class="nav-link">Tags</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                    <li><a href="#" class="nav-button flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                        Login
+                    </a></li>
                 </ul>
             </nav>
+            
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
         </div>
     </header>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu">
+        <button id="close-menu" class="absolute top-6 right-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <ul class="flex flex-col space-y-6">
+            <li><a href="{% url 'create_blog_post' %}" class="nav-link active">Home</a></li>
+            <li><a href="#" class="nav-link">Posts</a></li>
+            <li><a href="#" class="nav-link">Articles</a></li>
+            <li><a href="#" class="nav-link">Tags</a></li>
+            <li><a href="#" class="nav-link">Contact</a></li>
+            <li class="pt-4"><a href="#" class="nav-button flex items-center justify-center w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Login
+            </a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay for mobile menu -->
+    <div id="overlay" class="overlay"></div>
 
     <!-- Main Content Block -->
-    <div class="container mx-auto px-4 py-12">
+    <div class="container mx-auto px-4 py-24">
         {% block content %}{% endblock %}
     </div>
-
+    
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p>&copy; {% now 'Y' %} MyBlog. All rights reserved.</p>
         </div>
     </footer>
-
+    
+    <!-- Scripts -->
+    <script>
+        // Scroll Effect
+        window.addEventListener('scroll', function() {
+            let navbar = document.getElementById('navbars');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMenuButton = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('overlay');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        overlay.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    </script>
 </body>
 </html>

@@ -1,156 +1,446 @@
-{% extends 'base/base.html' %}
-{% block content %}
 
-<!-- Hero Section -->
-<section class="bg-cover bg-center h-96 relative" style="background-image: url('/static/images/hero.jpg');">
-    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold mb-4">Welcome to My Blog</h1>
-            <p class="text-lg">Insights, stories, and updates from around the world.</p>
-        </div>
+
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}  <!-- Ensure this is at the top -->
+
+<head>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- Bootstrap & GSAP -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="/static/js/your-custom-script.js"></script>
+
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link />
+  <style>
+    :root {
+      --header-height: 200px; /* Define header height as a CSS variable */
+  }
+  
+  #small-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Space out icons and title */
+      pointer-events: auto; /* Allow interactions */
+      opacity: 1; /* Ensure visibility */
+      
+        visibility: visible; /* Ensure it is not hidden */
+        height: 56px; /* Adjust height */
+        padding: 10px; /* Adjust padding */
+    }
+    
+  
+  
+  /* Ensure #small-title is visible */
+  #small-title {
+      opacity: 1; /* Override initial opacity: 0 */
+      transition: opacity 0.3s ease-in-out; /* Smooth transition for animations */
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 14px;
+  }
+  #small-title {
+    opacity: 0; /* Hide initially */
+    visibility: hidden; /* Prevent interaction */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+  /* Icon buttons */
+  .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer; /* Indicate interactivity */
+  }
+  
+  /* Header Styles */
+  .app-header {
+      display: block;
+      background: #3f51b5;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      color: #fff;
+      height: var(--header-height); /* Use CSS variable */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 1000; /* Ensure header stays above other content */
+  }
+  
+  .header-content {
+      position: relative;
+      height: 100%;
+      width: 100%;
+  }
+  
+  .app-toolbar {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      height: 64px;
+      padding: 0 16px;
+      font-size: 20px;
+  }
+  
+  /* Large Title */
+  #large-toolbar {
+      position: absolute;
+      bottom: 0;
+      transform-origin: left top;
+      margin-bottom: 5px;
+      width: 100%;
+  }
+  
+  .small-title,
+  .large-title {
+      white-space: nowrap;
+      flex: 1;
+      overflow: hidden;
+      font-weight: 400;
+      line-height: 1.5;
+      position: relative;
+  }
+  
+  .small-title {
+      opacity: 1; /* Ensure it's visible */
+  }
+  
+  .large-title {
+      font-size: 2em;
+      margin-left: 64px;
+  }
+  
+  /* Ensure icons align properly */
+  .icon-button {
+      display: inline-block;
+      padding: 6px;
+      width: 40px;
+      height: 40px;
+      box-sizing: border-box !important;
+  }
+  
+  /* Background Images */
+  .background-container {
+      position: absolute;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+  }
+  
+  .background {
+      position: absolute;
+      background-size: cover;
+      height: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      will-change: transform, opacity;
+  }
+  
+  /* Background Image Effects */
+  #background-back {
+      background-image: url("https://images.unsplash.com/photo-1589983846997-04788035bc83?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+      background-position: left center;
+      opacity: 0.5; /* Reduce transparency */
+  }
+  
+  #background-front {
+      background-image: url("https://images.unsplash.com/photo-1580818135730-ebd11086660b?q=80&w=2057&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+      background-position: left center;
+  }
+  
+  /* Main Content */
+  main {
+      padding-top: var(--header-height); /* Match header height using CSS variable */
+      font-family: Arial, sans-serif;
+      background: #eee;
+      min-height: 100vh; /* Ensure full viewport height */
+      margin-top: 0; /* Reset any unwanted margin */
+  }
+
+
+
+  </style>
+</head>
+<body>
+  <header id="app-header" class="app-header">
+    <div class="background-container">
+      <div id="background-back" class="background"></div>
+      <div id="background-front" class="background"></div>
     </div>
-</section>
-
-<style>
-  /* General Image Styling */
-  img {
-    max-width: 80%; /* Ensures images don't overflow their containers */
-    height: auto; /* Maintains aspect ratio */
-    display: block; /* Removes extra space below images */
-    border-radius: 8px; /* Adds rounded corners for a modern look */
-  }
-
-  /* Background Image Section */
-  .parallax-section {
-    position: relative;
-    width: 100%;
-    height: 200px; /* Fixed height for consistency */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
-  /* Overlay for Background Image */
-  .blog-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-  }
-
-  /* Sidebar Image Styling */
-  .posts-img {
-    width: 70px; /* Fixed width for sidebar images */
-    height: 100px; /* Fixed height for sidebar images */
-    object-fit: cover; /* Ensures images fill the container without distortion */
-    border-radius: 8px; /* Rounded corners */
-  }
-</style>
-
-<!-- Main Content -->
-<main class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Blog Posts -->
-    <div class="md:col-span-2 space-y-8">
-      {% for post in latest_posts %}
-      <article class="bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- Background Image Section -->
-        <section
-          class="parallax-section"
-          style="background-image: url('{{ post.background_image }}');"
-        >
-          <div class="blog-overlay p-6">
-            {% for image in post.images.all %}
-            <!-- Loop through related BlogImage objects -->
-            <p class="image-title text-white"><i class="fas fa-image"></i> {{ image.title }}</p>
-            {% endfor %}
-          </div>
-        </section>
-  
-        <!-- Post Content -->
-        <div class="p-6">
-          <!-- Tags -->
-          <ul class="flex space-x-2 mb-4">
-            <li>
-              <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Tech</a>
-            </li>
-            <li>
-              <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">News</a>
-            </li>
-          </ul>
-  
-          <!-- Title -->
-          <h2 class="text-xl font-bold mb-2">
-            <a href="{% url 'blog_details' post.id %}" class="hover:text-yellow-600 transition-colors">{{ post.title }}</a>
-          </h2>
-        
-
-          <!-- Description -->
-          <p class="text-gray-600 mb-4">{{ post.description }}</p>
-  
-          <!-- Metadata -->
-          <div class="flex items-center text-sm text-gray-500">
-            <time datetime="{{ post.date }}">{{ post.date|date:"F j, Y" }}</time>
-            <span class="mx-2">·</span>
-            <a href="#" class="hover:text-yellow-600">{{ post.author }}</a>
-          </div>
+    <div class="header-content">
+      <!-- Small Toolbar -->
+      <div id="small-toolbar" class="app-toolbar">
+        <div class="icon-button">
+       
         </div>
-      </article>
-      {% endfor %}
+        <!-- Small Title (Non-Clickable) -->
+        <div id="small-title" class="small-title">my blog</div>
+        <div class="icon-button">
+          <a href="#" class="icon">
+            <i class="material-icons">search</i>
+          </a>
+        </div>
+        <div class="icon-button">
+          <a class="dropdown-trigger icon" href="#" data-target="dropdown-menu">
+            <i class="material-icons">more_vert</i>
+          </a>
+        </div>
+      </div>
+      <!-- Dropdown Structure -->
+      <ul id="dropdown-menu" class="dropdown-content">
+        <li><a href="{% url 'create_blog_post' %}">Create blog</a></li>
+        <li><a href="#">Settings</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+      <!-- Large Toolbar -->
+      <div id="large-toolbar" class="app-toolbar tall">
+        <div id="large-title" class="large-title">MY BLOG</div>
+      </div>
     </div>
+  </header>
   
-    <!-- Sidebar -->
-    <aside class="space-y-8">
-        <!-- Search -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-bold mb-4">Search</h3>
-            <form method="GET" action="/search/">
-                <input type="text" name="q" placeholder="Search..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500">
-            </form>
-        </div>
 
-        <!-- Recent Posts -->
-    <!-- Recent Posts -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-lg font-bold mb-4">Recent Posts</h3>
-        <ul class="space-y-2">
-            {% for post in recent_posts %}
-            <li class="flex items-center space-x-4">
-                <!-- Image Handling -->
-                {% if post.image %}
-                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="posts-img">
+<main class="container mx-auto mt-[170px] px-9 py-20 grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- Blog Posts -->
+  <div class="md:col-span-2 space-y-4">
+    {% for post in latest_posts %}
+    <article class="bg-white rounded-lg shadow-md overflow-hidden">
+      <!-- Second Section -->
+      <div class="relative font-medium flex items-center content-center">
+        <div class="mr-auto ml-auto w-full px-6 py-8">
+          <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+            <div class="md:flex">
+              <!-- Featured Image -->
+              <div class="md:flex-shrink-0">
+                {% if post.featured_image and post.featured_image.url %}
+                    <img 
+                        src="{{ post.featured_image.url }}" 
+                        alt="{{ post.title }}" 
+                        class="h-48 w-full object-cover md:h-full md:w-48 rounded-lg"
+                    >
                 {% else %}
-                    <img src="/static/default-image.jpg" alt="Default Image" class="posts-img"> <!-- Fallback image -->
+                    <img 
+                        src="/static/default-image.jpg" 
+                        alt="Default Image"class="h-48 w-full object-cover md:h-full md:w-48 rounded-lg">
+                    
                 {% endif %}
-    
-                <div>
-                    <a href="{% url 'blog_details' post.id %}" class="block text-gray-700 hover:text-yellow-600 transition-colors">
-                        {{ post.title }}
-                    </a>
-                    <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"F j, Y" }}</time>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    
-        <!-- Tags -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-bold mb-4">Tags</h3>
-            <div class="flex flex-wrap gap-2">
-                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Technology</a>
-                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Programming</a>
-                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">AI</a>
-                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Web Development</a>
             </div>
-        </div>
-    </aside>
-</main>
+            
+              <div class="p-8">
+                <div class="uppercase tracking-wide text-sm text-indigo-700 font-semibold">Article</div>
 
-{% endblock %}
+                <!-- Title -->
+                <a href="{% url 'blog_details' post.id %}" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">
+                  {{ post.title }}
+                </a>
+
+                <!-- Description -->
+                <p class="mt-2 text-gray-500">
+                  {{ post.content }}
+                </p>
+
+                <!-- Metadata -->
+                <div class="flex items-center text-sm text-gray-500 mt-4">
+                  <span class="mx-2">·</span>
+                  <a href="#" class="hover:text-yellow-600">{{ post.author }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="md:col-span-1 col-span-full sticky top-20 space-y-8">    <!-- Search -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-bold mb-4">Search</h3>
+      <form method="GET" action="/search/">
+        <input type="text" name="q" placeholder="Search..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500">
+      </form>
+    </div>
+
+    
+    <!-- Recent Posts (Sticky) -->
+    <div class="bg-white rounded-lg shadow-md p-6 sticky top-20">
+      <h3 class="text-lg font-bold mb-4">Recent Posts</h3>
+      <ul class="space-y-2">
+        {% for post in recent_posts %}
+        <li class="flex items-center space-x-4">
+          {% if post.image %}
+          <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-12 h-12 rounded-full">
+          {% else %}
+          <img src="/static/default-image.jpg" alt="Default Image" class="w-12 h-12 rounded-full">
+          {% endif %}
+          <div>
+            <a href="{% url 'blog_details' post.id %}" class="block text-gray-700 hover:text-yellow-600 transition-colors">
+              {{ post.title }}
+            </a>
+            <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"F j, Y" }}</time>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Tags -->
+    
+  </aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    M.Dropdown.init(elems, {
+        coverTrigger: false,
+        closeOnClick: true,
+        constrainWidth: false
+    });
+});
+
+// jQuery alternative
+$(document).ready(function(){
+    $('.dropdown-trigger').dropdown({
+        coverTrigger: false,
+        closeOnClick: true,
+        constrainWidth: false
+    });
+});
+  document.addEventListener("DOMContentLoaded", function () {
+    var elems = document.querySelectorAll(".dropdown-trigger");
+    M.Dropdown.init(elems, {
+      coverTrigger: false, // Ensures the dropdown does not cover the trigger icon
+      constrainWidth: false, // Allows the dropdown to take full width if needed
+      alignment: "right" // Aligns the dropdown properly
+    });
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    // Initialize GSAP
+    const header = document.querySelector("#app-header");
+    const bgBack = document.querySelector("#background-back");
+    const bgFront = document.querySelector("#background-front");
+    const toolbar = document.querySelector("#small-toolbar");
+    const largeTitle = document.querySelector("#large-title");
+    const smallTitle = document.querySelector("#small-title");
+
+    const deltaHeight = header.offsetHeight - toolbar.offsetHeight;
+    const rect1 = smallTitle.getBoundingClientRect();
+    const rect2 = largeTitle.getBoundingClientRect();
+    const scale = rect1.height / rect2.height;
+    const x = rect1.left - rect2.left;
+    const y = rect1.top - rect2.top;
+
+    const headerAnimation = gsap.timeline({ paused: true })
+      .to(largeTitle, { duration: 1, scale, x, y: deltaHeight + y })
+      .to(header, { duration: 1, y: -deltaHeight }, 0)
+      .to(toolbar, { duration: 1, y: deltaHeight }, 0)
+      .to(bgBack, { duration: 1, y: deltaHeight / 2 }, 0)
+      .to(bgFront, { duration: 1, y: deltaHeight / 2 }, 0)
+      .to(bgBack, { duration: 1, opacity: 1 }, 0)
+      .to(bgFront, { duration: 1, opacity: 0 }, 0)
+      .set(smallTitle, { opacity: 1 }, 1)
+      .set(largeTitle, { opacity: 0 }, 1);
+
+    const shadowAnimation = gsap.to(header, { duration: 0.4, boxShadow: "0 2px 5px rgba(0,0,0,0.6)" }).reverse();
+
+    let progress = 0;
+    let requestId = null;
+    let reversed = true;
+
+    function requestUpdate() {
+      if (!requestId) {
+        requestId = requestAnimationFrame(update);
+      }
+    }
+
+    function update() {
+      const scroll = window.pageYOffset;
+      if (scroll < deltaHeight) {
+        progress = scroll < 0 ? 0 : scroll / deltaHeight;
+        reversed = true;
+      } else {
+        progress = 1;
+        reversed = false;
+      }
+      headerAnimation.progress(progress);
+      shadowAnimation.reversed(reversed);
+      requestId = null;
+    }
+
+    window.addEventListener("scroll", requestUpdate);
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    var dropdowns = document.querySelectorAll('.dropdown-trigger');
+    M.Dropdown.init(dropdowns, {
+        coverTrigger: false,
+        closeOnClick: true,
+        constrainWidth: false
+    });
+});
+window.addEventListener("scroll", function () {
+  let smallTitle = document.getElementById("small-title");
+  if (window.scrollY > 50) {  // Adjust scroll threshold as needed
+      smallTitle.style.opacity = "1";
+      smallTitle.style.visibility = "visible";
+  } else {
+      smallTitle.style.opacity = "0";
+      smallTitle.style.visibility = "hidden";
+  }
+});
+function toggleDropdown(event, toolbarId) {
+  event.preventDefault();
+  let dropdown = document.getElementById("dropdown-menu");
+
+  // Position dropdown near the clicked toolbar
+  let toolbar = document.getElementById(toolbarId);
+  let rect = toolbar.getBoundingClientRect();
+  dropdown.style.top = rect.bottom + "px";
+  dropdown.style.right = "10px"; // Adjust based on layout
+
+  // Toggle dropdown
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+// Event Listeners for both toolbars
+document.getElementById("small-dropdown-toggle").addEventListener("click", function(event) {
+  toggleDropdown(event, "small-toolbar");
+});
+
+document.getElementById("large-dropdown-toggle").addEventListener("click", function(event) {
+  toggleDropdown(event, "large-toolbar");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", function(event) {
+  let dropdown = document.getElementById("dropdown-menu");
+  let smallToggle = document.getElementById("small-dropdown-toggle");
+  let largeToggle = document.getElementById("large-dropdown-toggle");
+
+  if (!smallToggle.contains(event.target) && !largeToggle.contains(event.target) && !dropdown.contains(event.target)) {
+    dropdown.style.display = "none";
+  }
+});
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+</body>
+</html>

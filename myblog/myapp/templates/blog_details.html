@@ -14,21 +14,7 @@
     <!-- Image Details -->
     <div class="md:col-span-2 space-y-8">
         <article class="bg-white rounded-lg shadow-md overflow-hidden">
-            <!-- Featured Image -->
-
-            <!-- Image Content -->
             <div class="p-6">
-                <!-- Tags -->
-                <ul class="flex space-x-2 mb-4">
-                    {% for tag in tags %}
-                    <li>
-                        <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">{{ tag.name }}</a>
-                    </li>
-                    {% empty %}
-                    <p>No tags available.</p>
-                    {% endfor %}
-                </ul>
-
                 <!-- Title -->
                 <h2 class="text-2xl font-bold mb-4">{{ image.title }}</h2>
 
@@ -40,9 +26,13 @@
                 <!-- Related Blog Post -->
                 <div class="mt-6">
                     <h3 class="text-lg font-bold mb-2">From Blog Post:</h3>
-                    <a href="{% url 'blog_details' image.blog_post.id %}" class="text-blue-600 hover:text-blue-800 transition-colors">
+                    {% if image.blog_post %}
+                    <a href="" class="text-blue-600 hover:text-blue-800 transition-colors">
                         {{ image.blog_post.title }}
                     </a>
+                    {% else %}
+                    <p>No blog post available.</p>
+                    {% endif %}
                 </div>
             </div>
         </article>
@@ -50,34 +40,40 @@
 
     <!-- Sidebar -->
     <aside class="space-y-8">
-        <!-- Related Images -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-bold mb-4">Related Images</h3>
-            <ul class="space-y-2">
-                {% for related_image in related_posts %}
-                <li class="flex items-center space-x-4">
-                    <img src="{{ related_image.image.url }}" alt="{{ related_image.title }}" class="w-16 h-16 object-cover rounded-lg">
-                    <div>
-                        <a href="{% url 'image_details' related_image.id %}" class="block text-gray-700 hover:text-yellow-600 transition-colors">{{ related_image.title }}</a>
-                    </div>
-                </li>
-                {% empty %}
-                <p>No related images available.</p>
-                {% endfor %}
-            </ul>
-        </div>
+        <!-- Comment Section -->
+        <section class="container mx-auto px-4 py-8">
+            <h2 class="text-2xl font-semibold mb-4">Comments</h2>
 
-        <!-- Tags -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-bold mb-4">Tags</h3>
-            <div class="flex flex-wrap gap-2">
-                {% for tag in tags %}
-                <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">{{ tag.name }}</a>
-                {% empty %}
-                <p>No tags available.</p>
-                {% endfor %}
+            <!-- Display Comments -->
+            {% for comment in comments %}
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p><strong>{{ comment.user.username }}</strong> ({{ comment.created_at|date:"F j, Y" }})</p>
+                <p>{{ comment.content }}</p>
             </div>
-        </div>
+            {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+            <!-- Comment Form -->
+            <h3 class="text-xl font-semibold mt-6">Leave a Comment</h3>
+            <form method="POST" action="{% url 'image_detail' image_id=image.id %}" class="mt-4 bg-white p-6 rounded-lg shadow-md">
+                {% csrf_token %}
+                
+                <!-- Hidden input to pass the image ID -->
+                <input type="hidden" name="image_id" value="{{ image.id }}">
+            
+                <label for="content" class="block text-lg font-medium">Your Comment:</label>
+                <textarea name="content" id="content" rows="4" class="w-full border rounded-lg p-2 mt-2" placeholder="Write your comment here..."></textarea>
+                
+                <button type="submit" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Submit Comment
+                </button>
+            </form>
+            {% else %}
+            <p><a href="{% url 'login' %}" class="text-blue-600">Log in</a> to comment.</p>
+            {% endif %}
+        </section>
     </aside>
 </main>
 

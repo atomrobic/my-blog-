@@ -1,0 +1,12 @@
+/* Default Light Theme */
+body {
+    background-color: white;
+    color: black;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Dark Mode */
+.dark-theme {
+    background-color: black;
+    color: white;
+}

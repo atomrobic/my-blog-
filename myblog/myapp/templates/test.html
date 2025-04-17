@@ -1,122 +1,329 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Home Page</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 font-sans">
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Menu, X, ArrowRight, Mail } from "lucide-react";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
+import "./index.css"; // Import the CSS file
 
-  <!-- Header -->
-  <header class="bg-gray-900 text-white py-8">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <!-- Logo -->
-      <a href="#" class="text-2xl font-bold">MyBlog</a>
+const App = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll("section");
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const scrollY = window.scrollY + 100; // Add offset for better detection
+  
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+          setActiveSection(section.id);
+        }
+      });
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+   
+  const projects = [
+    {
+      id: 1,
+      title: "Food Ordering App",
+      description: "A full-stack application for ordering food online with payment integration.",
+      tags: ["React", "Django", "Python", "REST API"],
+    },
+    {
+      id: 2,
+      title: "Personal Blog Platform",
+      description: "A custom blog platform with content management system.",
+      tags: ["React", "Django", "Tailwind CSS"],
+    },
+    {
+      id: 3,
+      title: "Movie Database Site",
+      description: "A movie browsing application with user reviews and recommendations.",
+      tags: ["React", "Python", "API Integration"],
+    },
+    {
+      id: 4,
+      title: "Hospital Management System",
+      description: "An administrative tool for managing hospital resources and patients.",
+      tags: ["Django", "React", "Database Design"],
+    },
+    {
+      id: 5,
+      title: "Career Portal",
+      description: "Job listing and application platform for employers and job seekers.",
+      tags: ["React", "Django", "Authentication"],
+    },
+  ];
 
-      <!-- Navigation -->
-      <nav>
-        <ul class="flex space-x-6">
-          <li><a href="#" class="hover:text-yellow-500 transition-colors">Home</a></li>
-          <li><a href="#" class="hover:text-yellow-500 transition-colors">Posts</a></li>
-          <li><a href="#" class="hover:text-yellow-500 transition-colors">Articles</a></li>
-          <li><a href="#" class="hover:text-yellow-500 transition-colors">Tags</a></li>
-          <li><a href="#" class="hover:text-yellow-500 transition-colors">Contact</a></li>
-        </ul>
+  return (
+    <div className="bg-gray-900 text-gray-100">
+      {/* Navbar */}
+      <nav
+        className={`fixed top-0 w-full bg-gray-800 shadow-md z-50 transition-all duration-300 ${
+          activeSection !== "home" ? "bg-opacity-100 py-2" : "bg-opacity-70 py-4"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            {/* Logo */}
+            <span
+              className={`text-xl font-bold text-blue-400 transition-all duration-300 ${
+                activeSection !== "home" ? "text-base" : "text-xl"
+              }`}
+            >
+              Akhil.dev
+            </span>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-8">
+              {["home", "about", "projects", "contact"].map((section) => (
+                <a
+                  key={section}
+                  href={`#${section}`}
+                  className={`${
+                    activeSection === section
+                      ? "text-blue-400 font-medium"
+                      : "text-gray-300 hover:text-blue-400"
+                  } transition-colors`}
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </a>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-gray-300 hover:text-blue-400"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden bg-gray-800 shadow-lg"
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {["home", "about", "projects", "contact"].map((section) => (
+                <a
+                  key={section}
+                  href={`#${section}`}
+                  className={`${
+                    activeSection === section
+                      ? "bg-gray-700 text-blue-400"
+                      : "text-gray-300"
+                  } block px-3 py-2 rounded-md text-base font-medium`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </nav>
-    </div>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="bg-cover bg-center h-96 relative" style="background-image: url('https://via.placeholder.com/1920x400');">
-    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold mb-4">Welcome to My Blog</h1>
-        <p class="text-lg">Your source of creativity, sports, and lifestyle inspiration.</p>
-      </div>
-    </div>
-  </section>
+{/* Hero Section */}
+<section
+  id="home"
+  className="min-h-screen pt-20 flex flex-col items-center justify-center text-white px-4 md:px-10 lg:px-10 xl:px-24 relative overflow-hidden"
+>
+  {/* Background Image from Unsplash */}
+  <div
+    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={{
+      backgroundImage:
+        "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
+    }}
+  >
+    {/* Light Effect */}
+    <motion.div
+      className="absolute inset-0 bg-white/20 rounded-full pointer-events-none"
+      style={{ width: "200px", height: "200px", mixBlendMode: "overlay" }}
+      animate={{ x: 0, y: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 10 }}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left - 100; // Center the light effect
+        const y = e.clientY - rect.top - 100;
+        e.currentTarget.style.transform = `translate(${x}px, ${y}px)`;
+      }}
+    />
+  </div>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Blog Posts -->
-    <div class="md:col-span-2 space-y-8">
-      <!-- Post 1 -->
-      <article class="bg-white rounded-lg shadow-md overflow-hidden">
-        <img src="https://via.placeholder.com/800x400" alt="Post Image" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <ul class="flex space-x-2 mb-4">
-            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Travel</a></li>
-            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Health</a></li>
-          </ul>
-          <h2 class="text-xl font-bold mb-2"><a href="#" class="hover:text-yellow-600 transition-colors">10 Places Worth Waking Up Early For</a></h2>
-          <p class="text-gray-600 mb-4">So, you're in St. Petersburg. Early morning. The ice has melted from the rivers and canals, the city's fountains are running... Museums are still closed. What to see?</p>
-          <div class="flex items-center text-sm text-gray-500">
-            <time datetime="2023-10-01">October 1, 2023</time>
-            <span class="mx-2">·</span>
-            <a href="#" class="hover:text-yellow-600">Unknown Author</a>
-          </div>
-        </div>
-      </article>
+  {/* Dark Overlay to Improve Readability */}
+  <div className="absolute inset-0 bg-black bg-opacity-70"></div>
 
-      <!-- Post 2 -->
-      <article class="bg-white rounded-lg shadow-md overflow-hidden">
-        <img src="https://via.placeholder.com/800x400" alt="Post Image" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <ul class="flex space-x-2 mb-4">
-            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Lifestyle</a></li>
-            <li><a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">Food</a></li>
-          </ul>
-          <h2 class="text-xl font-bold mb-2"><a href="#" class="hover:text-yellow-600 transition-colors">The Art of Mindful Eating</a></h2>
-          <p class="text-gray-600 mb-4">Discover how mindful eating can transform your relationship with food and improve your overall well-being.</p>
-          <div class="flex items-center text-sm text-gray-500">
-            <time datetime="2023-09-28">September 28, 2023</time>
-            <span class="mx-2">·</span>
-            <a href="#" class="hover:text-yellow-600">Jane Doe</a>
-          </div>
-        </div>
-      </article>
-    </div>
+  {/* Profile Card */}
+ 
+   {/* Profile Card */}
+<motion.div
+  initial={{ opacity: 0, x: 300 }} // Start off-screen to the right
+  whileInView={{ opacity: 1, x: 0 }} // Slide in from the right
+  viewport={{ once: true }} // Trigger animation only once
+  transition={{ duration: 0.8, delay: 0.2 }}
+  className="relative z-10 flex flex-col md:flex-row w-full max-w-6xl mx-auto p-8 bg-gray-800 bg-opacity-80 rounded-3xl shadow-2xl"
+>
+  {/* Profile Image (Left-Aligned) */}
+  {/* Profile Image (Left-Aligned) */}
+  <motion.div
+  className="relative flex justify-center items-center"
+  whileHover={{ scale: 1.05 }}
+  transition={{ duration: 0.3 }}
+>
+  {/* Profile Image */}
+  <motion.img
+    src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    alt="Profile"
+    className="w-48 h-48 border-4 border-blue-100 object-cover shadow-lg backdrop-blur-lg rounded-full transition-all duration-300 hover:border-blue-400 relative z-10"
+    style={{
+      boxShadow: "0 0 15px 5px rgba(12, 13, 13, 0.5)", // Light blue blur effect
+    }}
+    initial={{ x: -50, opacity: 0 }}
+    animate={{ x: 0, opacity: 1 }}
+    transition={{ duration: 0.8, delay: 0.2 }}
+    whileHover={{
+      scale: 1.05,
+    }}
+  />
 
-    <!-- Sidebar -->
-    <aside class="space-y-8">
-      <!-- Search -->
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-lg font-bold mb-4">Search</h3>
-        <form>
-          <input type="text" placeholder="Search..." class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500">
-        </form>
-      </div>
+  {/* Glowing Circle Animation */}
+ {/* Glowing Circle Animation */}
+<div
+  className="absolute inset-0 rounded-full animate-spin-slow pointer-events-none hidden md:block"
+  style={{
+    border: "2px solid transparent",
+    borderTopColor: "rgba(97, 59, 100, 0.8)",
+    animation: "spin 2s linear infinite",
+  }}
+/>
 
-      <!-- Recent Posts -->
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-lg font-bold mb-4">Recent Posts</h3>
-        <ul class="space-y-2">
-          <li><a href="#" class="block text-gray-700 hover:text-yellow-600 transition-colors">10 Places Worth Waking Up Early For</a></li>
-          <li><a href="#" class="block text-gray-700 hover:text-yellow-600 transition-colors">The Art of Mindful Eating</a></li>
-          <li><a href="#" class="block text-gray-700 hover:text-yellow-600 transition-colors">How to Stay Fit While Traveling</a></li>
-        </ul>
-      </div>
+</motion.div>
 
-      <!-- Tags -->
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-lg font-bold mb-4">Tags</h3>
-        <div class="flex flex-wrap gap-2">
-          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Travel</a>
-          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Health</a>
-          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Lifestyle</a>
-          <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm hover:bg-yellow-200 transition-colors">Food</a>
-        </div>
-      </div>
-    </aside>
-  </main>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-8">
-    <div class="container mx-auto px-4 text-center">
-      <p>&copy; 2023 MyBlog. All rights reserved.</p>
-    </div>
-  </footer>
+  {/* Text Content (Centered) */}
+  <div className="md:w-2/3 flex flex-col justify-center items-center text-center">
+    {/* Title */}
+    <motion.h1
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.4 }}
+      className="text-3xl md:text-4xl font-bold mb-4 text-yellow-300"
+    >
+      Hi, I'm <span className="text-white">Akhil</span>
+    </motion.h1>
 
-</body>
-</html>
+    {/* Subtitle */}
+    <motion.p
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.6 }}
+      className="text-lg md:text-xl mb-6 text-gray-300"
+    >
+      Full Stack Developer | Python | Django | React
+    </motion.p>
+
+    {/* Buttons */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.8 }}
+      className="flex flex-col sm:flex-row gap-4 justify-center"
+    >
+      <motion.a
+        href="#projects"
+        className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.3 }}
+      >
+        View My Work
+        <ArrowRight size={16} className="ml-2" />
+      </motion.a>
+      <motion.a
+        href="#contact"
+        className="px-6 py-3 bg-transparent border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-600 hover:text-white transition-colors flex items-center justify-center"
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.3 }}
+      >
+        Contact Me
+      </motion.a>
+    </motion.div>
+
+    {/* Social Icons */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 1 }}
+      className="flex space-x-6 mt-6 justify-center"
+    >
+      {/* LinkedIn Icon */}
+      <a
+        href="https://www.linkedin.com/in/your-profile"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 hover:text-blue-800 transition-transform transform hover:scale-110"
+      >
+        <FaLinkedin size={32} />
+      </a>
+
+      {/* GitHub Icon */}
+      <a
+        href="https://github.com/your-profile"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-800 hover:text-black transition-transform transform hover:scale-110"
+      >
+        <FaGithub size={32} />
+      </a>
+    </motion.div>
+  </div>
+</motion.div>
+</section>
+      {/* About Section */}
+      <section id="about" className="py-20 px-8 bg-gray-800">
+        <div className="max-w-4x3 mx-auto">
+          {/* Title */}
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl font-bold mb-8 text-center text-white"
+          >
+            About Me
+          </motion.h2>
+
+          {/* Content Container */}
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-gray-700 rounded-xl shadow-lg p-6 md:p-8"
+          >
+          <div className="flex flex-col md:flex-row gap-8">
+          <div className="md:w-1/3">
+  <div className="relative w-full h-64 overflow-hidden rounded-lg shadow-lg">
+    <video 
+      className="w-full h-full object-cover" 
+      autoPlay 
+      muted 
+      loop
+      controls 
+      poster="https://images.unsplash.com/photo-1537498425277-c283d32ef9db?q=80&w=2078&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    >
+<source src="/assets/video/videoplayback(1).webm" type="video/webm" />
+Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+

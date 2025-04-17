@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallax Scrolling with Video Background</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@300;400;500;900&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Open Sans", sans-serif;
+    }
+    main {
+      position: relative;
+      width: calc(min(90rem, 90%));
+      margin: 0 auto;
+      min-height: 100vh;
+      column-gap: 3rem;
+      padding-block: min(20vh, 3rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .bg, .bg2 {
+      position: fixed;
+      z-index: -1;
+      opacity: 0;
+    }
+    .bg {
+      top: -4rem;
+      left: -12rem;
+    }
+    .bg2 {
+      bottom: -2rem;
+      right: -3rem;
+      width: 9.375rem;
+    }
+    .content {
+      text-align: righ;
+      margin-bottom: 2rem;
+    }
+    .content span {
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 1rem;
+      color: #717171;
+    }
+    .content h1 {
+      text-transform: capitalize;
+      letter-spacing: 0.8px;
+      font-family: "Roboto", sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
+      background-color: #005baa;
+      background-image: linear-gradient(45deg, #005baa, #a89696);
+      background-size: 100%;
+      background-repeat: repeat;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+    }
+    .content hr {
+      display: block;
+      background: #005baa;
+      height: 0.25rem;
+      width: 6.25rem;
+      border: none;
+      margin: 1.125rem auto 1.875rem;
+    }
+    .content p {
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .content a {
+      display: inline-block;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: #717171;
+      font-weight: 500;
+      background: #fff;
+      border-radius: 3.125rem;
+      padding: 0.625rem 1.875rem;
+      margin-top: 2.188rem;
+      border: 2px solid #c2c2c2;
+      transition: 0.3s ease-in-out;
+    }
+    .content a:hover {
+      border-color: #005baa;
+      color: #005baa;
+    }
+    .swiper {
+      width: 50%;
+      padding-top: 3.125rem;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+  }
+  
+  .swiper-slide {
+      width: 18.75rem;
+      height: 18.125rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* Align content to bottom */
+      align-items: center; /* Center horizontally */
+      background-size: cover;
+      background-position: center;
+      border-radius: 20px;
+      padding: 1rem; /* Add padding for better spacing */
+      text-align: center; /* Ensure text alignment */
+  }
+  
+  .swiper-slide h2, 
+  .swiper-slide p {
+      text-align: center;
+  }
+  
+  .swiper-slide a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5em 2em;
+      font-size: 0.9rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 3.125rem;
+      text-decoration: none;
+      transition: all 0.3s ease-in-out;
+      text-align: center;
+  }
+  
+  .swiper-slide a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5em 2em;
+    font-size: 0.9rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.6); /* Default background */
+    border-radius: 3.125rem;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Hover Effect */
+.swiper-slide a:hover {
+    background: #d32a0d; /* Red on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(211, 42, 13, 0.5);
+}
+
+/* Active (Clicked) - Always Stays Red */
+.swiper-slide a:focus,
+.swiper-slide a:active {
+    background: #d32a0d !important; /* Red stays even after click */
+    transform: scale(1); /* Prevent shrinking */
+    box-shadow: 0 4px 10px rgba(211, 42, 13, 0.5);
+}
+
+  
+  /* Ensure proper responsiveness */
+  @media screen and (min-width: 48rem) {
+      main {
+          flex-direction: row;
+          align-items: center;
+      }
+      .bg, .bg2 {
+          opacity: 0.1;
+      }
+  }
+  
+  @media screen and (min-width: 93.75rem) {
+      .swiper {
+          width: 85%;
+      }
+  }
+  
+  /* Reset styles */
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+    html, body {
+      overflow: hidden;
+      height: 100%;
+    }
+    .container {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .background {
+      background-size: cover;
+      background-position: center;
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1.2s ease, transform 1.2s ease;
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    .background:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    .content-wrappers {
+      position: absolute; /* Allows manual placement */
+      top: 50%; /* Adjusts vertical position */
+      left: 10%; /* Move to the left manually */
+      transform: translateY(-50%); /* Centers vertically */
+      text-align: left;
+      color: #fff;
+      font-family: Montserrat, sans-serif;
+      text-transform: uppercase;
+      z-index: 1001; /* Ensure it's above other elements */
+
+  }
+  
+  .content-title {
+      font-size: 12vh;
+      line-height: 1.4;
+      margin: 0;
+  }
+  
+  .content-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+  }
+  
+  
+    /* Video background for the first section */
+    .video-background {
+      position: fixed;
+      pointer-events: none;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Moves the video to the background */
+}
+    
+    /* Individual slide backgrounds */
+    .background:nth-child(2) {
+      background-image: url("https://github.com/NOSDOOM/picturehost/raw/master/4Aihmii.jpg");
+    }
+    .background:nth-child(3) {
+      background-image: url("https://i.redd.it/4vqygabli4mx.jpg");
+    }
+    /* Active slide effect */
+    .background.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Previous slide effect */
+    .background.previous {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* Sidebar Navbar */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background: #002b5c;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Heading */
+.sidebar h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+/* Navbar Links */
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.2rem;
+  transition: 0.3s;
+  padding: 10px 15px;
+  display: block;
+}
+
+.sidebar nav ul li a:hover {
+  background: #005baa;
+  border-radius: 8px;
+}
+
+/* Main Content */
+.content {
+  margin-left: 270px; /* Leave space for the sidebar */
+  padding: 50px;
+}
+
+/* Sections */
+section {
+  height: 100vh; /* Full-screen height */
+  padding: 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Scroll Effect - Highlight Active Link */
+.sidebar nav ul li a.active {
+  background: #d32a0d;
+  border-radius: 8px;
+}
+
+  </style>
+</head>
+<body>
+
+</header>
+  <div class="container">
+    <section class="background active">
+      <video class="video-background" autoplay muted loop>
+        <source src="{% static 'video/kerala.webm' %}" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="content-wrappers">
+          <p class="content-title">Be Present</p>
+          <p class="content-subtitle">Wecome to kerala my explore!</p>
+        </div>
+      </a>
+  </section>
+    
+
+        <main>
+          <div class="content">
+          
+          </div>
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              <!-- Slide 1 -->
+              <div class="swiper-slide" style="background-image: url('https://picsum.photos/500/750?random=1');">
+                <div>
+                  <h2>Jellyfish</h2>
+                  <p>Jellyfish and sea jellies are the informal common names given to the medusa-phase of certain gelatinous members of the subphylum Medusozoa, a major part of the phylum Cnidaria.</p>
+                  <a href="https://en.wikipedia.org/wiki/Jellyfish" target="_blank" >explore</a>
+                </div>
+              </div>
+              <!-- Slide 2 -->
+              <div class="swiper-slide" style="background-image: url('https://picsum.photos/500/750?random=2');">
+                <div>
+                  <h2>Seahorse</h2>
+                  <p>Experience the magic of a Florida sunset like never before on our daily Sunset Cruise. Departing from St. Petersburg, this 90-minute excursion offers the perfect vantage point to witness the breathtaking hues of the setting sun reflecting off the tranquil waters.</p>
+                  <a href="https://cdn.prod.website-files.com/67646bc27cd171f4f4446754/67648015fb1098364eaba017_dolpins-950x650-salty-pelican-banners-021.jpg" target="_blank">explore</a>
+                </div>
+              </div>
+              <!-- Slide 3 -->
+              <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1621246935353-ff54e60ab837?q=80&w=1926&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                <div>
+                  <h2>Octopus</h2>
+                  <p>Octopuses inhabit various regions of the ocean, including coral reefs, pelagic waters, and the seabed; some live in the intertidal zone and others at abyssal depths. Most species grow quickly, mature early, and are short-lived.</p>
+                  <a href="https://en.wikipedia.org/wiki/Octopus" target="_blank">explore</a>
+                </div>
+              </div>
+              <!-- Slide 4 -->
+              <div class="swiper-slide" style="background-image: url('https://images.unsplash.com/photo-1597735881932-d9664c9bbcea?q=80&w=1966&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+                <div>
+                  <h2>Shark</h2>
+                  <p>Sharks are a group of elasmobranch fish characterized by a cartilaginous skeleton, five to seven gill slits on the sides of the head, and pectoral fins that are not fused to the head.</p>
+                  <a href="https://en.wikipedia.org/wiki/Shark" target="_blank">explore</a>
+                </div>
+              </div>
+              <!-- Slide 5 -->
+              <div class="swiper-slide" style="background-image: url('https://picsum.photos/500/750?random=5');">
+                <div>
+                  <h2>Dolphin</h2>
+                  <p>Dolphins are widespread. Most species prefer the warm waters of the tropic zones, but some, such as the right whale dolphin, prefer colder climates. Dolphins feed largely on fish and squid, but a few, such as the orca, feed on large mammals such as seals.</p>
+                  <a href="https://en.wikipedia.org/wiki/Dolphin" target="_blank">explore</a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+          <img src="https://cdn.pixabay.com/photo/2021/11/04/19/39/jellyfish-6769173_960_720.png" alt="" class="bg">
+          <img src="https://cdn.pixabay.com/photo/2012/04/13/13/57/scallop-32506_960_720.png" alt="" class="bg2">
+        </main>
+      </div>
+    </section>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script>
+   
+  
+  
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".background");
+    const totalSlides = slides.length;
+    let isScrolling = false;
+
+    // Handle scroll events
+    function handleScroll(event) {
+      if (isScrolling) return;
+      isScrolling = true;
+      const delta = event.deltaY;
+
+      if (delta > 0 && currentSlide < totalSlides - 1) {
+        // Move to the next slide
+        slides[currentSlide].classList.remove("active");
+        slides[currentSlide].classList.add("previous");
+        currentSlide++;
+        slides[currentSlide].classList.add("active");
+      } else if (delta < 0 && currentSlide > 0) {
+        // Move to the previous slide
+        slides[currentSlide].classList.remove("active");
+        currentSlide--;
+        slides[currentSlide].classList.add("active");
+        slides[currentSlide].classList.remove("previous");
+      }
+
+      setTimeout(() => {
+        isScrolling = false;
+      }, 1200); // Match the timeout to the CSS transition duration
+    }
+
+    window.addEventListener("wheel", handleScroll);
+
+    // Initialize Swiper.js
+    const swiper = new Swiper(".swiper", {
+      effect: "coverflow",
+      grabCursor: true,
+      centeredSlides: true,
+      coverflowEffect: {
+        rotate: 0,
+        stretch: 0,
+        depth: 100,
+        modifier: 3,
+        slideShadows: true,
+      },
+      keyboard: {
+        enabled: true,
+      },
+      mousewheel: {
+        thresholdDelta: 70,
+      },
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+        },
+        768: {
+          slidesPerView: 1,
+        },
+        1024: {
+          slidesPerView: 2,
+        },
+        1560: {
+          slidesPerView: 3,
+        },
+      },
+    });
+   
+    document.addEventListener("DOMContentLoaded", function () {
+      const navLinks = document.querySelectorAll(".sidebar nav ul li a");
+  
+      window.addEventListener("scroll", () => {
+          let fromTop = window.scrollY;
+  
+          navLinks.forEach(link => {
+              let section = document.querySelector(link.getAttribute("href"));
+              if (section.offsetTop <= fromTop + 100 && section.offsetTop + section.offsetHeight > fromTop) {
+                  navLinks.forEach(a => a.classList.remove("active"));
+                  link.classList.add("active");
+              }
+          });
+      });
+  });
+  
+  
+  </script>
+</body>
+</html> 

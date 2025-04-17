@@ -15,60 +15,68 @@
 <main class="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
     <!-- Blog Post -->
     <div class="md:col-span-2 space-y-8">
-      <article class="bg-white rounded-lg shadow-md overflow-hidden">
-        <!-- Featured Image -->
-    
-        <!-- Post Content -->
-        <div class="p-6">
+        <article class="bg-white rounded-lg shadow-md overflow-hidden">
             <!-- Tags -->
-            <ul class="flex space-x-2 mb-4">
+            <ul class="flex space-x-2 mb-4 p-6">
                 {% for tag in post.tags.all %}
                 <li>
                     <a href="#" class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm">{{ tag.name }}</a>
                 </li>
                 {% endfor %}
             </ul>
-    
-            <!-- Title -->
-    
-            <!-- Author & Date -->
-           
-            <!-- Full Content -->
-            
-           
- <!-- Related Images -->
- {% for image in post.images.all %}
- <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-120">
-     <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-         <a href="{% url 'image_detail' image.id %}">
-             <img src="{{ image.image.url }}" alt="{{ image.title }}" class="w-full h-48 object-cover rounded-lg">
-         </a>
-     </div>
-     <div class="p-4">
-         <div class="mb-4 rounded-full bg-cyan-600 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
-             POPULAR
-         </div>
-         <h6 class="mb-2 text-slate-800 text-xl font-semibold">{{ image.title }}</h6>
-         <p class="text-slate-600 leading-normal font-light">
-             {{ image.description }}
-         </p>
-     </div>
-     <div class="flex items-center justify-between p-4">
-         <div class="flex items-center">
-             <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
-                 alt="Tania Andrew"
-                 class="relative inline-block h-8 w-8 rounded-full"/>
-             <div class="flex flex-col ml-3 text-sm">
-                 <span class="text-slate-800 font-semibold">Lewis Daniel</span>
-                 <span class="text-slate-600">January 10, 2024</span>
-             </div>
-         </div>
-     </div>
- </div> 
- {% endfor %}
-</article>
 
-  </div>
+            <!-- Related Images -->
+            {% for image in post.images.all %}
+            <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-120">
+                <!-- Image -->
+                <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+                    <a href="{% url 'image_detail' image.id %}">
+                        <img src="{{ image.image.url }}" alt="{{ image.title }}" class="w-full h-48 object-cover rounded-lg">
+                    </a>
+                </div>
+
+                <!-- Image Details -->
+                <div class="p-4">
+                    <!-- Badge -->
+                    <div class="mb-4 rounded-full bg-cyan-600 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
+                        POPULAR
+                    </div>
+
+                    <!-- Title -->
+                    <h6 class="mb-2 text-slate-800 text-xl font-semibold">{{ image.title }}</h6>
+
+                    <!-- Description -->
+                    <div class="relative">
+                        <p id="desc-{{ image.id }}" class="text-slate-600 leading-normal font-light line-clamp-3 overflow-hidden transition-all duration-300 ease-in-out">
+                            {{ image.description }}
+                        </p>
+                        {% if image.description|length > 100 %}
+                        <a href="{% url 'image_detail' image_id=image.id %}" class="text-blue-600 hover:text-blue-800 transition-colors">
+                            View Image
+                        </a>
+                        
+                        
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Author & Date -->
+                <div class="flex items-center justify-between p-4">
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1480&amp;q=80"
+                            alt="Tania Andrew"
+                            class="relative inline-block h-8 w-8 rounded-full">
+
+                        <div class="flex flex-col ml-3 text-sm">
+                            <span class="text-slate-800 font-semibold">{{ post.author }}</span>
+                            <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"F j, Y" }}</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </article>
+    </div>
 
     <!-- Sidebar -->
     <aside class="space-y-8">
@@ -105,7 +113,10 @@
                 {% endfor %}
             </div>
         </div>
-
+<!-- Voice Recognition Button -->
+<button id="voice-button" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">
+    🎤 Voice Command
+</button>
         <!-- Categories -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h3 class="text-lg font-bold mb-4">Categories</h3>
@@ -118,7 +129,86 @@
                 {% endfor %}
             </ul>
         </div>
+           <!-- Create Blog Image Form -->
+           <div class="bg-white rounded-lg shadow-md p-6 mt-8">
+            <h3 class="text-xl font-bold mb-4">Upload a New Blog Image</h3>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'create_blog_image' post.id %}">
+                {% csrf_token %}
+                
+                <!-- Image Title -->
+                <label class="block mb-2">
+                    <span class="text-gray-700">Title:</span>
+                    <input type="text" name="title" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500" required>
+                </label>
+
+                <!-- Image Upload -->
+                <label class="block mb-2">
+                    <span class="text-gray-700">Upload Image:</span>
+                    <input type="file" name="image" class="w-full px-4 py-2 border border-gray-300 rounded" required>
+                </label>
+
+                <!-- Description -->
+                <label class="block mb-4">
+                    <span class="text-gray-700">Description:</span>
+                    <textarea name="description" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-yellow-500"></textarea>
+                </label>
+
+                <!-- Submit Button -->
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Upload Image
+                </button>
+            </form>
+        </div>
     </aside>
 </main>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = "en-US";
+        recognition.continuous = false;
+        recognition.interimResults = false;
+    
+        document.getElementById("voice-button").addEventListener("click", function () {
+            recognition.start();
+        });
+    
+        recognition.onresult = function (event) {
+            let voiceCommand = event.results[0][0].transcript.toLowerCase();
+            console.log("Recognized:", voiceCommand);
+            
+            // Redirect based on command
+            if (voiceCommand.includes("home")) {
+                speak("Opening home page...");
+                setTimeout(() => {
+                    window.location.href = "/home";  // Redirect to home
+                }, 2000); // Give time for voice to speak before redirecting
+    
+            } else if (voiceCommand.includes("search")) {
+                document.getElementById("search-input").focus();
+                speak("Focusing on search input");
+    
+            } else if (voiceCommand.includes("upload")) {
+                document.getElementById("upload-form").scrollIntoView();
+                speak("Scrolling to upload form");
+    
+            } else {
+                speak("Unknown command");
+                alert("Unknown command: " + voiceCommand);
+            }
+        };
+    
+        recognition.onerror = function (event) {
+            console.error("Speech recognition error:", event.error);
+        };
+    
+        // Function to speak text
+        function speak(text) {
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "en-US";
+            synth.speak(utterance);
+        }
+    });
+    </script>
+       
 {% endblock %}

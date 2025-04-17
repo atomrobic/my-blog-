@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.text import slugify
-from .models import BlogPost, Destination, BlogImage
+from .models import BlogPost, Destination, BlogImage,Comment
 
 class BlogImageForm(forms.ModelForm):
     image = forms.ImageField(
@@ -69,3 +69,18 @@ class BlogPostForm(forms.ModelForm):
             raise forms.ValidationError("Please select an existing destination or enter a new one.")
 
         return cleaned_data
+class BlogImageForm(forms.ModelForm):
+    class Meta:
+        model = BlogImage
+        fields = ['image', 'title', 'description']
+        widgets = {
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Image Title'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Image Description'}),
+        }
+        
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']  # Use 'content', NOT 'text'fi
